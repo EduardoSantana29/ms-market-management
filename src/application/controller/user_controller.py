@@ -28,3 +28,19 @@ class UserController:
 
         except Exception as e:
             return make_response(jsonify({"erro": str(e)}), 400)
+        
+    @staticmethod
+    def activate_seller():
+        """Ativa um vendedor na aplicação."
+        Caso os dados obrigatórios não sejam informados, retorna um erro 400 (Bad Request)."
+        Caso a ativação seja realizada com sucesso, retorna um código 200 (OK) com a mensagem de sucesso."""""
+
+        data = request.get_json()
+        celular = data.get('celular')
+        codigo = data.get('codigo')
+
+        if not celular or not codigo:
+            return make_response(jsonify({"erro": "Campos obrigatórios ausentes"}), 400)
+
+        response = UserService.verify_activation_code(celular, codigo)
+        return make_response(jsonify(response), 200)
