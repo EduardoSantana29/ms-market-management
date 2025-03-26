@@ -29,3 +29,21 @@ class UserService:
         WhatsAppService.send_code(celular, activation_code)
 
         return new_seller
+
+    @staticmethod
+    def verify_activation_code(celular, codigo):
+        """Verifica se o celular e código de ativação enviado é válido.\n
+        Atualiza o status do usuário para 'Ativo' no banco de dados."""
+
+        seller = User.query.filter_by(celular=celular).first()
+        if not seller:
+            raise Exception("Celular não encontrado")
+
+        if seller.activation_code != codigo:
+            raise Exception("Código inválido")
+
+        seller.status = "Ativo"
+        seller.activation_code = None
+        db.session.commit()
+
+        return {"message": "Conta ativada com sucesso!"}
