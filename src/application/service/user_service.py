@@ -47,3 +47,25 @@ class UserService:
         db.session.commit()
 
         return {"message": "Conta ativada com sucesso!"}
+    
+    @staticmethod
+    def authenticate_seller(email, senha):
+        """Autentica o usuário à partir do e-mail e senha informados.\n
+        Gera um token JWT com expiração de 1 hora, à partir do ID do usuário."""
+        try:
+            seller = User.query.filter_by(email=email).first()
+
+            if not seller or not seller.check_password(senha):
+                return {"erro": "E-mail ou senha inválidos"}, 401
+
+            if seller.status != "Ativo":
+                return {"erro": "Conta inativa. Complete a ativação antes de acessar."}, 403
+
+            token = jwt.encode({
+                'seller_id': seller.id,
+                'exp': datetime.utcnow() + timedelta(hours=1)
+            }, senha, algorithm='HS256')
+
+            return token
+        except Exception as e:
+            return {"erro": str(e)}, 500
