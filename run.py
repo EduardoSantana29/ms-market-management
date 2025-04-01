@@ -15,7 +15,7 @@ def create_app():
             db.create_all()
             print("📌 Banco de dados SQLite criado!")
 
-    app.register_blueprint(blueprint, url_prefix='/api')
+    app.register_blueprint(blueprint)
 
     return app
 
