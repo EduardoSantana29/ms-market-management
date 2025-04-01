@@ -9,7 +9,8 @@ class UserController:
         Caso o cadastro seja realizado com sucesso, retorna um código 201 (Created) com o ID do vendedor cadastrado."""
         
         try:
-            data = request.get_json()
+            data = request.form
+            print(data)
             nome = data.get('nome')
             cnpj = data.get('cnpj')
             email = data.get('email')
