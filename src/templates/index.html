@@ -13,7 +13,7 @@
         </div>
 
         <div class="form">
-            <form action="{{ url_for('api.register_seller') }}" method="POST">
+            <form id="register-form">
                 <div class="form-header">
                     <div class="title">
                         <h1>Cadastre-se</h1>
@@ -56,5 +56,31 @@
             </form>
         </div>
     </div>
+
+    <script>
+        document.getElementById("register-form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+    
+            const formData = new FormData(this);
+    
+            try {
+                const response = await fetch("/api/sellers", {
+                    method: "POST",
+                    body: formData
+                });
+    
+                const result = await response.json();
+    
+                if (response.ok) {
+                    alert(result.mensagem);
+                    window.location.href = result.redirect; // redireciona para tela de ativação
+                } else {
+                    alert(result.erro || "Erro ao cadastrar.");
+                }
+            } catch (error) {
+                alert("Erro de conexão com o servidor.");
+            }
+        });
+    </script>
 </body>
 </html>

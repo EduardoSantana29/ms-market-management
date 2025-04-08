@@ -23,8 +23,8 @@ class UserController:
             seller = UserService.create_seller(nome, cnpj, email, celular, senha)
 
             return make_response(jsonify({
-                "mensagem": "Seller salvo com sucesso!",
-                "seller_id": seller.id
+                "mensagem": "Seller salvo com sucesso! Redirecionando...",
+                "redirect": "/activate"
             }), 201)
 
         except Exception as e:
