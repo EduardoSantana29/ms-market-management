@@ -68,4 +68,4 @@ class UserService:
 
             return token
         except Exception as e:
-            return {"erro": str(e)}, 500
+            return {"erro": str(e)}, 500 

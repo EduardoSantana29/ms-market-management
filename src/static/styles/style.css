@@ -76,7 +76,7 @@ body {
 
 .form-header h1::after {
     content: '';
-    display: block;
+    display: block; 
     width: 5rem;
     height: 0.3rem;
     background-color: #140e87;
@@ -158,14 +158,14 @@ body {
 }
 
 .continue-button button:hover {
-    background-color: #140e83;
+    background-color: #dfdfdf;
 }
 
 .continue-button button a {
     text-decoration: none;
     font-size: 0.93rem;
     font-weight: 500;
-    color: #fff;
+    color: #e4e4e4;
 }
 
 @media screen and (max-width: 1330px) {

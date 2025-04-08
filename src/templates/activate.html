@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ativar Vendedor</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/activate.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="form">
+            <h2>Ativar Conta</h2>
+            <form id="activation-form">
+                <div class="input-box">
+                    <label for="celular">Celular</label>
+                    <input id="celular" type="tel" name="celular" placeholder="(xx) xxxxx-xxxx" required>
+                </div>
+
+                <div class="input-box">
+                    <label for="codigo">Código de Ativação</label>
+                    <input id="codigo" type="text" name="codigo" placeholder="Digite o código recebido" required>
+                </div>
+
+                <div class="continue-button">
+                    <button type="submit">Ativar</button>
+                </div>
+            </form>
+            <p id="message"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("activation-form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+    
+            const celular = document.getElementById("celular").value;
+            const codigo = document.getElementById("codigo").value;
+            const messageElement = document.getElementById("message");
+    
+            try {
+                const response = await fetch("/api/sellers/activate", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ celular, codigo })
+                });
+    
+                const result = await response.json();
+    
+                if (response.ok) {
+                    messageElement.textContent = "Conta ativada com sucesso!";
+                    messageElement.style.color = "green";
+                    // Aguarda 2 segundos antes de redirecionar para a página de login
+                    setTimeout(() => {
+                        window.location.href = "/login";
+                    }, 2000);
+                } else {
+                    messageElement.textContent = result.erro || "Erro ao ativar a conta.";
+                    messageElement.style.color = "red";
+                }
+            } catch (error) {
+                messageElement.textContent = "Erro na conexão com o servidor.";
+                messageElement.style.color = "red";
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+

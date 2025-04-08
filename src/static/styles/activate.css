@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #140e87;
+}
+
+.container {
+    width: 80%;
+    max-width: 400px;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+h2 {
+    color: #140e87;
+    margin-bottom: 1.5rem;
+}
+
+.input-box {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.input-box label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #000000c0;
+    margin-bottom: 0.3rem;
+}
+
+.input-box input {
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.1);
+}
+
+.input-box input:focus {
+    outline: 1px solid #140e87;
+}
+
+.continue-button button {
+    width: 100%;
+    padding: 0.8rem;
+    border: none;
+    background-color: #140e87;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.continue-button button:hover {
+    background-color: #0f0b6a;
+}
+
+#message {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}

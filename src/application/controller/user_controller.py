@@ -56,4 +56,4 @@ class UserController:
             return make_response(jsonify({"erro": "Campos obrigatórios ausentes"}), 400)  # Mensagem em português
 
         token = UserService.authenticate_seller(email, senha)
-        return make_response(jsonify({"access_token": token}), 200)
+        return make_response(jsonify({"access_token": token}), 200) 
