@@ -8,15 +8,15 @@ def create_app():
     """Inicializa a aplicação Flask e a base de dados SQLite."""
     app = Flask(__name__, template_folder='src/templates', static_folder='src/static')
 
-    app.secret_key = '9f1c7d2e3b6a4e2a9f7b6c5a1a4f3c2d1e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b'
+    app.config['SECRET_KEY'] = '9f1c7d2e3b6a4e2a9f7b6c5a1a4f3c2d1e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b'
 
     init_db(app)
     init_routes(app)
 
     with app.app_context():
-        if not os.path.exists("database.db"):
-            db.create_all()
-            print("📌 Banco de dados SQLite criado!")
+        db.create_all()
+        print("📌 Tabelas criadas no PostgreSQL!")
+
 
     app.register_blueprint(blueprint)
 

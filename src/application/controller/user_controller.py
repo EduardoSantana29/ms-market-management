@@ -1,16 +1,15 @@
-from flask import request, jsonify, make_response
+import jwt
+import datetime
+from flask import request, jsonify, make_response, current_app
 from src.application.service.user_service import UserService
+from src.infrastructure.model.user import User
 
 class UserController:
     @staticmethod
     def register_seller():
-        """Cadastra um vendedor na aplicação.
-        Caso os dados obrigatórios não sejam informados, retorna um erro 400 (Bad Request).
-        Caso o cadastro seja realizado com sucesso, retorna um código 201 (Created) com o ID do vendedor cadastrado."""
-        
         try:
-            data = request.form
-            print(data)
+            data = request.get_json() or request.form
+
             nome = data.get('nome')
             cnpj = data.get('cnpj')
             email = data.get('email')
@@ -29,13 +28,9 @@ class UserController:
 
         except Exception as e:
             return make_response(jsonify({"erro": str(e)}), 400)
-        
+
     @staticmethod
     def activate_seller():
-        """Ativa um vendedor na aplicação."
-        Caso os dados obrigatórios não sejam informados, retorna um erro 400 (Bad Request)."
-        Caso a ativação seja realizada com sucesso, retorna um código 200 (OK) com a mensagem de sucesso."""""
-
         data = request.get_json()
         celular = data.get('celular')
         codigo = data.get('codigo')
@@ -45,7 +40,7 @@ class UserController:
 
         response = UserService.verify_activation_code(celular, codigo)
         return make_response(jsonify(response), 200)
-    
+
     @staticmethod
     def login():
         data = request.get_json()
@@ -53,7 +48,25 @@ class UserController:
         senha = data.get('senha')
 
         if not email or not senha:
-            return make_response(jsonify({"erro": "Campos obrigatórios ausentes"}), 400)  # Mensagem em português
+            return make_response(jsonify({"erro": "Campos obrigatórios ausentes"}), 400)
 
-        token = UserService.authenticate_seller(email, senha)
-        return make_response(jsonify({"access_token": token}), 200) 
+        user = User.query.filter_by(email=email).first()
+
+        if not user or not user.check_password(senha):
+            return make_response(jsonify({"erro": "Credenciais inválidas"}), 401)
+
+        if user.status != "Ativo":
+            return make_response(jsonify({"erro": "Conta não ativada"}), 403)
+
+        # Gerar token JWT
+        payload = {
+            "user_id": user.id,
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=2)
+        }
+
+        token = jwt.encode(payload, current_app.config['SECRET_KEY'], algorithm='HS256')
+
+        return make_response(jsonify({
+            "mensagem": "Login bem-sucedido",
+            "access_token": token
+        }), 200)
