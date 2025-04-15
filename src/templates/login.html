@@ -32,10 +32,10 @@
     <script>
         document.getElementById("login-form").addEventListener("submit", async function(event) {
             event.preventDefault();
-
+    
             const email = document.getElementById("email").value;
             const senha = document.getElementById("senha").value;
-
+    
             const response = await fetch("/api/auth/login", {
                 method: "POST",
                 headers: {
@@ -43,11 +43,23 @@
                 },
                 body: JSON.stringify({ email, senha })
             });
-
+    
             const result = await response.json();
-            document.getElementById("message").textContent = result.erro || "Login realizado com sucesso!";
-            document.getElementById("message").style.color = response.ok ? "green" : "red";
+            const message = document.getElementById("message");
+    
+            if (response.ok) {
+                message.textContent = "Login realizado com sucesso!";
+                message.style.color = "green";
+    
+                // Redireciona após 1 segundo
+                setTimeout(() => {
+                    window.location.href = "/home";
+                }, 1000);
+            } else {
+                message.textContent = result.erro || "Erro ao realizar login.";
+                message.style.color = "red";
+            }
         });
-    </script>
+    </script>    
 </body>
 </html>
