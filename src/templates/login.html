@@ -30,36 +30,39 @@
     </div>
 
     <script>
-        document.getElementById("login-form").addEventListener("submit", async function(event) {
-            event.preventDefault();
-    
-            const email = document.getElementById("email").value;
-            const senha = document.getElementById("senha").value;
-    
-            const response = await fetch("/api/auth/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ email, senha })
-            });
-    
-            const result = await response.json();
-            const message = document.getElementById("message");
-    
-            if (response.ok) {
-                message.textContent = "Login realizado com sucesso!";
-                message.style.color = "green";
-    
-                // Redireciona após 1 segundo
-                setTimeout(() => {
-                    window.location.href = "/home";
-                }, 1000);
-            } else {
-                message.textContent = result.erro || "Erro ao realizar login.";
-                message.style.color = "red";
-            }
-        });
+  document.getElementById("login-form").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const senha = document.getElementById("senha").value;
+
+    const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, senha })
+    });
+
+    const result = await response.json();
+    const message = document.getElementById("message");
+
+    if (response.ok) {
+        // Aqui, armazenamos o token no localStorage
+        localStorage.setItem('token', result.access_token);
+
+        message.textContent = "Login realizado com sucesso!";
+        message.style.color = "green";
+
+        // Redireciona após 1 segundo
+        setTimeout(() => {
+            window.location.href = "/home";
+        }, 1000);
+    } else {
+        message.textContent = result.erro || "Erro ao realizar login.";
+        message.style.color = "red";
+    }
+});
     </script>    
 </body>
 </html>

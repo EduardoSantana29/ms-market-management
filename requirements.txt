@@ -5,3 +5,4 @@ werkzeug==2.0.2
 sqlalchemy==1.4.49
 PyJWT==2.3.0 
 twilio
+flask-jwt-extended==4.4.4

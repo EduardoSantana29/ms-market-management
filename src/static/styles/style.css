@@ -56,23 +56,22 @@ body {
     align-items: center;
 }
 
-.login-button button {
-    border: none;
+.login-button a {
+    text-decoration: none;
     background-color: #140e87;
     padding: 0.4rem 1rem;
     border-radius: 5px;
     cursor: pointer;
+    font-weight: 500;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
 }
 
-.login-button button:hover {
+.login-button a:hover {
     background-color: #140e89;
 }
 
-.login-button button a {
-    text-decoration: none;
-    font-weight: 500;
-    color: #fff;
-}
 
 .form-header h1::after {
     content: '';
@@ -158,10 +157,10 @@ body {
 }
 
 .continue-button button:hover {
-    background-color: #dfdfdf;
+    background-color: #0f0b75;
 }
 
-.continue-button button a {
+.continue-button button {
     text-decoration: none;
     font-size: 0.93rem;
     font-weight: 500;

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Produtos - MS Market</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/product_list.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Lista de Produtos</h1>
+    </header>
+
+    <main>
+        <div class="content">
+            <table id="productsTable">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Preço</th>
+                        <th>Quantidade</th>
+                        <th>Status</th>
+                        <th>Imagem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Os produtos serão preenchidos aqui -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 MS Market Management. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        // Função para carregar os produtos
+        async function loadProducts() {
+            try {
+                const response = await fetch('/api/products', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')  // Passando o token de autenticação
+                    }
+                });
+                
+                const products = await response.json();
+                
+                const tableBody = document.querySelector('#productsTable tbody');
+                
+                // Limpa a tabela antes de adicionar os novos produtos
+                tableBody.innerHTML = '';
+                
+                // Adiciona os produtos à tabela
+                products.forEach(product => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${product.name}</td>
+                        <td>${product.price}</td>
+                        <td>${product.quantity}</td>
+                        <td>${product.status}</td>
+                        <td><img src="${product.image_url}" alt="${product.name}" width="50"></td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar os produtos:', error);
+                alert('Erro ao carregar os produtos');
+            }
+        }
+
+        // Carrega os produtos quando a página for carregada
+        document.addEventListener('DOMContentLoaded', loadProducts);
+    </script>
+</body>
+</html>

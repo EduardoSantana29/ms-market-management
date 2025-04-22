@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from flask_jwt_extended import JWTManager
 from src.config.data_base import init_db, db
 from src.route import init_routes
 from src.route import blueprint
@@ -9,6 +10,12 @@ def create_app():
     app = Flask(__name__, template_folder='src/templates', static_folder='src/static')
 
     app.config['SECRET_KEY'] = '9f1c7d2e3b6a4e2a9f7b6c5a1a4f3c2d1e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b'
+
+     # Configuração do JWT
+    app.config['JWT_SECRET_KEY'] = '9f1c7d2e3b6a4e2a9f7b6c5a1a4f3c2d1e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b'  # Substitua por sua chave secreta
+    app.config['JWT_TOKEN_LOCATION'] = ['headers']  # Define onde o token será procurado (cabeçalho)
+
+    jwt = JWTManager(app)
 
     init_db(app)
     init_routes(app)
@@ -39,6 +46,12 @@ def login_page():
 @app.route("/home")
 def home():
     return render_template("home.html")
+
+from flask import render_template
+
+@app.route('/produtos/cadastrar')
+def cadastrar_produto():
+    return render_template('create_product.html') 
 
 if __name__ == '__main__':
     app.run(debug=True)

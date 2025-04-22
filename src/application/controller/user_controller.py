@@ -3,6 +3,7 @@ import datetime
 from flask import request, jsonify, make_response, current_app
 from src.application.service.user_service import UserService
 from src.infrastructure.model.user import User
+from flask_jwt_extended import create_access_token
 
 class UserController:
     @staticmethod
@@ -59,14 +60,9 @@ class UserController:
             return make_response(jsonify({"erro": "Conta não ativada"}), 403)
 
         # Gerar token JWT
-        payload = {
-            "user_id": user.id,
-            "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=2)
-        }
-
-        token = jwt.encode(payload, current_app.config['SECRET_KEY'], algorithm='HS256')
+        access_token = create_access_token(identity=user.id)
 
         return make_response(jsonify({
             "mensagem": "Login bem-sucedido",
-            "access_token": token
+            "access_token": access_token
         }), 200)

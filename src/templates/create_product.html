@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Produto - MS Market</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/create_product.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Cadastrar Produto</h1>
+    </header>
+
+    <main>
+        <section class="form-section">
+            <form id="productForm">
+                <div class="form-group">
+                    <label for="name">Nome:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="price">Preço:</label>
+                    <input type="number" id="price" name="price" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="quantity">Quantidade:</label>
+                    <input type="number" id="quantity" name="quantity" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="image_url">Imagem (URL):</label>
+                    <input type="url" id="image_url" name="image_url">
+                </div>
+
+                <div class="form-group">
+                    <label for="status">Status:</label>
+                    <select id="status" name="status">
+                        <option value="Ativo">Ativo</option>
+                        <option value="Inativo">Inativo</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn">Cadastrar Produto</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 MS Market Management. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        document.getElementById('productForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+            const productData = Object.fromEntries(formData);
+
+            fetch('/api/products', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                },
+                body: JSON.stringify(productData)
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Erro ao cadastrar produto');
+                return response.json();
+            })
+            .then(data => {
+                alert('Produto cadastrado com sucesso!');
+                window.location.href = '/produtos';
+            })
+            .catch(error => {
+                console.error(error);
+                alert('Erro ao cadastrar produto');
+            });
+        });
+    </script>
+</body>
+</html>
