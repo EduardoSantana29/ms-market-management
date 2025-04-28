@@ -62,35 +62,16 @@ class ProductController:
     @staticmethod
     @jwt_required()
     def deactivate_product(product_id):
-        current_user_id = get_jwt_identity()  # Seller ID
-        product = ProductService.get_product_by_id_and_seller(product_id, current_user_id)
+        current_user_id = get_jwt_identity()
+        product = ProductService.deactivate_product(product_id, current_user_id)
 
         if not product:
             return make_response(jsonify({"erro": "Produto não encontrado ou não autorizado"}), 404)
 
-        # Alterando o status para 'Inativo'
-        product.status = 'Inativo'
-        db.session.commit()
-
         return make_response(jsonify({"mensagem": "Produto inativado com sucesso!"}), 200)
 
+
     @staticmethod
-    def list_products():
-        try:
-            # Recupera todos os produtos do banco de dados
-            products = Product.query.all()
-
-            # Converte os produtos em uma lista de dicionários
-            products_data = [product.to_dict() for product in products]
-
-            # Retorna os produtos em formato JSON
-            return jsonify(products_data), 200
-        except Exception as e:
-            return jsonify({'erro': str(e)}), 500
-
-
-
-'''
     @jwt_required()
     def delete_product(product_id):
         current_user_id = get_jwt_identity()  # Seller ID
@@ -100,4 +81,3 @@ class ProductController:
             return make_response(jsonify({"erro": "Produto não encontrado"}), 404)
 
         return make_response(jsonify({"mensagem": "Produto excluído com sucesso!"}), 200)
-'''

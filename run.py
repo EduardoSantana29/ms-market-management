@@ -47,11 +47,17 @@ def login_page():
 def home():
     return render_template("home.html")
 
-from flask import render_template
-
 @app.route('/produtos/cadastrar')
 def cadastrar_produto():
     return render_template('create_product.html') 
+
+@app.route('/produtos')
+def listar_produtos():
+    return render_template('product_list.html')
+
+@app.route('/produtos/inativar')
+def deactivate_product():
+    return render_template('product_deactivate.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

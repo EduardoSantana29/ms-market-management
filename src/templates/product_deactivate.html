@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Inativar Produto</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/product_deactivate.css') }}">
+</head>
+<body>
+
+  <header>
+    <h1>Gestão de Produtos</h1>
+  </header>
+
+  <div class="container">
+    <h2>Inativar Produto</h2>
+
+    <input type="text" id="productId" placeholder="ID do Produto">
+    <button onclick="inativarProduto()">Inativar</button>
+
+    <p id="resultado"></p>
+  </div>
+
+  <footer>
+    <p>© 2025 MS Market Management. Todos os direitos reservados.</p>
+    <p>Contato: contato@msmarket.com | (11) 99999-9999</p>
+  </footer>
+
+  <script>
+    async function inativarProduto() {
+      const productId = document.getElementById('productId').value;
+      const token = localStorage.getItem('token'); // Certifique-se que o token está salvo
+
+      if (!productId) {
+        document.getElementById('resultado').innerText = "Por favor, insira o ID do produto.";
+        return;
+      }
+
+      if (!token) {
+        document.getElementById('resultado').innerText = "Token de autenticação não encontrado. Faça login novamente.";
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/api/products/${productId}/deactivate`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        // Verifica o status da resposta HTTP
+        if (response.ok) {
+          const data = await response.json();
+          document.getElementById('resultado').innerText = data.mensagem || "Produto inativado com sucesso!";
+        } else {
+          const errorData = await response.json();
+          document.getElementById('resultado').innerText = errorData.erro || "Erro ao inativar produto.";
+        }
+      } catch (error) {
+        document.getElementById('resultado').innerText = "Erro ao conectar com o servidor.";
+        console.error(error);
+      }
+    }
+  </script>
+
+</body>
+</html>

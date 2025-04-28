@@ -43,7 +43,7 @@ class ProductService:
         """Retorna um produto específico se ele pertencer ao seller autenticado."""
         return Product.query.filter_by(id=product_id, seller_id=seller_id).first()
 
-'''
+
     @staticmethod
     def delete_product(product_id):
         """Exclui um produto pelo ID."""
@@ -53,4 +53,16 @@ class ProductService:
             db.session.commit()
             return product
         return None
-'''
+    
+    @staticmethod
+    def deactivate_product(product_id, seller_id):
+        """Inativa o produto alterando seu status para 'Inativo' se pertencer ao seller."""
+        product = ProductService.get_product_by_id_and_seller(product_id, seller_id)
+
+        if not product:
+            return None
+
+        product.status = 'Inativo'
+        db.session.commit()
+
+        return product

@@ -1,10 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
-body {
-    font-family: 'Inter', sans-serif;
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    font-family: 'Inter', sans-serif;
     background-color: #140e87;
     color: #fff;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -17,75 +25,74 @@ header {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-main {
+.container {
+    flex: 1;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    align-items: flex-start;
-    padding: 40px 20px;
+    padding: 20px;
+    text-align: center;
 }
 
-.form-section {
-    background-color: #ffffff11;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+h2 {
+    font-size: 2rem;
+    color: #fde3a7d7;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+input {
     width: 100%;
-    max-width: 500px;
-}
-
-.form-group {
+    max-width: 400px;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
     margin-bottom: 20px;
 }
 
-label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #fde3a7d7;
-}
-
-input, select {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    background-color: #fff;
-    color: #333;
-}
-
-input:focus, select:focus {
+input:focus {
     border-color: #fde3a7d7;
     outline: none;
 }
 
-.submit-btn {
+button {
+    width: 100%;
+    max-width: 400px;
+    padding: 14px;
+    font-size: 16px;
     background-color: #fde3a7d7;
     color: #140e87;
     border: none;
-    padding: 14px;
-    font-size: 16px;
     border-radius: 10px;
-    width: 100%;
-    cursor: pointer;
     font-weight: 600;
+    cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 6px rgba(0,0,0,0.2);
 }
 
-.submit-btn:hover {
+button:hover {
     background-color: #fbdc8c;
     transform: translateY(-2px);
     box-shadow: 0 6px 10px rgba(0,0,0,0.25);
+}
+
+#resultado {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fde3a7d7;
 }
 
 footer {
     background-color: #fde3a7d7;
     color: #140e87;
     text-align: center;
-    padding: 20px;
-    font-size: 14px;
+    padding: 15px 0;
+    font-size: 1rem;
     font-weight: 500;
-    margin-top: auto;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
