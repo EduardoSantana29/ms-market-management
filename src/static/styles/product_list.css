@@ -37,7 +37,7 @@ main {
     background-color: #ffffff11;
     padding: 2rem;
     border-radius: 16px;
-    width: 100%;
+    width: 200%;
     max-width: 1000px;
     overflow-x: auto;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
@@ -62,7 +62,7 @@ thead th {
 }
 
 tbody td {
-    padding: 0.75rem;
+    padding: 0.50rem;
     border-bottom: 1px solid #ffffff44;
 }
 
@@ -72,8 +72,8 @@ tbody tr:hover {
 
 img {
     border-radius: 8px;
-    max-width: 50px;
-    max-height: 50px;
+    max-width: 70px;
+    max-height: 70px;
 }
 
 footer {
@@ -83,4 +83,21 @@ footer {
     padding: 1rem;
     font-size: 0.9rem;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Força largura fixa para a coluna 'Nome' */
+td:first-child,
+th:first-child {
+    width: 250px;
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+tbody td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #ffffff44;
+    vertical-align: auto;
+    height: 100px; /* altura mínima para alinhar as linhas */
 }

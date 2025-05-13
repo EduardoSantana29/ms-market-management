@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Produto</title>
+    <link rel="stylesheet" href="/static/styles/update_product.css">
+</head>
+<body>
+    <header>
+        <h1>Editar Produtos</h1>
+    </header>
+
+    <main>
+        <div class="form-section">
+            <div class="form-group">
+                <label for="productIdInput">Digite o ID do Produto:</label>
+                <input type="number" id="productIdInput" placeholder="Ex: 1" required>
+            </div>
+            <button class="submit-btn" onclick="buscarProduto()">Buscar Produto</button>
+
+            <form id="editForm" style="display: none; margin-top: 2rem;">
+                <div class="form-group">
+                    <label for="name">Nome:</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="price">Preço:</label>
+                    <input type="number" step="0.01" id="price" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantidade:</label>
+                    <input type="number" id="quantity" required>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status:</label>
+                    <select id="status">
+                        <option value="Ativo">Ativo</option>
+                        <option value="Inativo">Inativo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="image_url">URL da Imagem:</label>
+                    <input type="text" id="image_url">
+                </div>
+
+                <button type="submit" class="submit-btn">Salvar Alterações</button>
+            </form>
+
+            <div id="responseMessage"></div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 MS Market Management. Todos os direitos reservados.</p>
+        <p>Contato: contato@msmarket.com | (11) 99999-9999</p>
+    </footer>
+
+    <script>
+        // Função para buscar o produto por ID
+        function buscarProduto() {
+            const id = document.getElementById('productIdInput').value;
+            const token = localStorage.getItem('token');  // Recupera o token de autenticação
+
+            if (!id) {
+                document.getElementById('responseMessage').innerText = 'Por favor, informe o ID do produto.';
+                return;
+            }
+
+            // Faz a requisição para a API para buscar o produto
+            fetch(`/api/products/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.erro) {
+                    document.getElementById('responseMessage').innerText = data.erro;
+                    return;
+                }
+
+                // Exibe o formulário de edição com os dados do produto
+                document.getElementById('editForm').style.display = 'block';
+                document.getElementById('name').value = data.name;
+                document.getElementById('price').value = data.price;
+                document.getElementById('quantity').value = data.quantity;
+                document.getElementById('status').value = data.status;
+                document.getElementById('image_url').value = data.image_url;
+
+                // Armazena o ID do produto no formulário para referência futura
+                document.getElementById('editForm').dataset.productId = id;
+            })
+            .catch(() => {
+                document.getElementById('responseMessage').innerText = 'Erro ao buscar produto.';
+            });
+        }
+
+        // Função para enviar o formulário de atualização do produto
+        document.getElementById('editForm').addEventListener('submit', function (event) {
+            event.preventDefault();  // Impede o envio do formulário de forma tradicional
+            const id = this.dataset.productId;
+            const token = localStorage.getItem('token');
+
+            const data = {
+                name: document.getElementById('name').value,
+                price: parseFloat(document.getElementById('price').value),
+                quantity: parseInt(document.getElementById('quantity').value),
+                status: document.getElementById('status').value,
+                image_url: document.getElementById('image_url').value
+            };
+
+            // Faz a requisição para atualizar o produto
+            fetch(`/api/products/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(response => {
+                if (response.id) {
+                    document.getElementById('responseMessage').innerText = 'Produto atualizado com sucesso!';
+                } else {
+                    document.getElementById('responseMessage').innerText = 'Erro ao atualizar o produto.';
+                }
+            })
+            .catch(() => {
+                document.getElementById('responseMessage').innerText = 'Erro ao atualizar produto.';
+            });
+        });
+    </script>
+</body>
+</html>

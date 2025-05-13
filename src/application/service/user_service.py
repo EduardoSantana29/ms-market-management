@@ -63,7 +63,7 @@ class UserService:
 
             token = jwt.encode({
                 'seller_id': seller.id,
-                'exp': datetime.utcnow() + timedelta(hours=3)
+                'exp': datetime.utcnow() + timedelta(hours=10)
             }, senha, algorithm='HS256')
 
             return token

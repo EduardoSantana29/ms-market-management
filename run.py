@@ -4,12 +4,12 @@ from src.config.data_base import init_db, db
 from src.route import init_routes
 from src.route import blueprint
 import os
+from src.application.service.product_service import ProductService 
+
 
 def create_app():
     """Inicializa a aplicação Flask e a base de dados SQLite."""
     app = Flask(__name__, template_folder='src/templates', static_folder='src/static')
-
-    app.config['SECRET_KEY'] = '9f1c7d2e3b6a4e2a9f7b6c5a1a4f3c2d1e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b'
 
      # Configuração do JWT
     app.config['JWT_SECRET_KEY'] = '9f1c7d2e3b6a4e2a9f7b6c5a1a4f3c2d1e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b'  # Substitua por sua chave secreta
@@ -58,6 +58,14 @@ def listar_produtos():
 @app.route('/produtos/inativar')
 def deactivate_product():
     return render_template('product_deactivate.html')
+
+@app.route('/produtos/editar', methods=['GET'])
+def update_produto():
+    return render_template('update_product.html')
+
+@app.route('/produtos/excluir', methods=['GET'])
+def render_delete_product():
+    return render_template('delete_product.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -66,3 +66,27 @@ class ProductService:
         db.session.commit()
 
         return product
+
+    @staticmethod
+    def update_product_by_seller(product_id, seller_id, name, price, quantity, status, image_url):
+        product = Product.query.filter_by(id=product_id, seller_id=seller_id).first()
+        if not product:
+            return None
+
+        product.name = name
+        product.price = price
+        product.quantity = quantity
+        product.status = status
+        product.image_url = image_url
+        db.session.commit()
+        return product
+    
+    @staticmethod
+    def delete_product_by_seller(product_id, seller_id):
+        prod = Product.query.filter_by(id=product_id, seller_id=seller_id).first()
+        if not prod:
+            return None
+        db.session.delete(prod)
+        db.session.commit()
+        return prod
+

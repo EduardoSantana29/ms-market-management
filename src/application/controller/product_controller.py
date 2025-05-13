@@ -1,11 +1,7 @@
 from flask import request, jsonify, make_response
 from src.application.service.product_service import ProductService
-from src.application.controller.user_controller import UserController
-from src.infrastructure.model.user import User
-from src.infrastructure.model.product import Product
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from src.config.data_base import db
-
+from src.infrastructure.model.product import Product
 
 class ProductController:
 
@@ -73,11 +69,18 @@ class ProductController:
 
     @staticmethod
     @jwt_required()
-    def delete_product(product_id):
-        current_user_id = get_jwt_identity()  # Seller ID
-        product = ProductService.delete_product(product_id)
-
+    def get_product(product_id, user_id):
+        """Método para buscar um produto específico de um vendedor"""
+        product = ProductService.get_product_by_id_and_seller(product_id, user_id)
         if not product:
-            return make_response(jsonify({"erro": "Produto não encontrado"}), 404)
+            return make_response(jsonify({"erro": "Produto não encontrado ou não pertence a você"}), 404)
+        return make_response(jsonify(product.to_dict()), 200)
 
-        return make_response(jsonify({"mensagem": "Produto excluído com sucesso!"}), 200)
+    @staticmethod
+    @jwt_required()
+    def delete_product(product_id):
+        current_user_id = get_jwt_identity()
+        deleted = ProductService.delete_product_by_seller(product_id, current_user_id)
+        if not deleted:
+            return jsonify({"erro": "Produto não encontrado ou não autorizado"}), 404
+        return jsonify({"mensagem": "Produto excluído com sucesso!"}), 200
