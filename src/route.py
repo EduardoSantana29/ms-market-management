@@ -3,6 +3,7 @@ from src.application.controller.user_controller import UserController
 from src.application.controller.product_controller import ProductController
 from src.application.service.product_service import ProductService 
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from src.application.controller.sale_controller import sale_bp
 
 blueprint = Blueprint('api', __name__)
 
@@ -26,7 +27,7 @@ def init_routes(app):
     def login():
         """Endpoint que autentica o vendedor na aplicação."""
         return UserController.login()
-    
+
     # Rotas de produtos
     @blueprint.route('/api/products', methods=['POST'])
     def create_product():
@@ -73,4 +74,4 @@ def init_routes(app):
     @jwt_required()
     def delete_product(product_id):
         return ProductController.delete_product(product_id)
-        
+    

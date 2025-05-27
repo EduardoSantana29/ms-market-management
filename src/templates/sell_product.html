@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Registrar Venda</title>
+    <link rel="stylesheet" href="/static/styles/sell_product.css" />
+</head>
+<body>
+    <header>
+        <h1>Registrar Venda</h1>
+    </header>
+
+    <main>
+        <div class="form-section">
+            <form id="sellForm">
+                <div class="form-group">
+                    <label for="productIdInput">ID do Produto:</label>
+                    <input type="number" id="productIdInput" placeholder="Ex: 1" required />
+                </div>
+                <div class="form-group">
+                    <label for="quantityInput">Quantidade:</label>
+                    <input type="number" id="quantityInput" placeholder="Ex: 5" min="1" required />
+                </div>
+
+                <button type="submit" class="submit-btn">Registrar Venda</button>
+            </form>
+
+            <div id="responseMessage"></div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 MS Market Management. Todos os direitos reservados.</p>
+        <p>Contato: contato@msmarket.com | (11) 99999-9999</p>
+    </footer>
+
+<script>
+    document.getElementById('sellForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const productId = document.getElementById('productIdInput').value;
+        const quantity = document.getElementById('quantityInput').value;
+        const token = localStorage.getItem('token');
+
+        const responseMessage = document.getElementById('responseMessage');
+
+        if (!productId || !quantity) {
+            responseMessage.innerText = 'Por favor, preencha todos os campos.';
+            return;
+        }
+
+        fetch('/sell', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                product_id: parseInt(productId),
+                quantity: parseInt(quantity)
+            })
+        })
+        .then(async res => {
+            let data = null;
+
+            try {
+                data = await res.json();
+            } catch (e) {
+                // Se não for JSON válido, mantém como null
+            }
+
+            if (res.ok) {
+                responseMessage.innerText = data?.mensagem || 'Venda registrada com sucesso.';
+                document.getElementById('sellForm').reset();
+            } else {
+                let msg = 'Erro ao registrar a venda.';
+
+                if (data?.erro) {
+                    if (data.erro.toLowerCase().includes('produto inativo')) {
+                        msg = 'Produto inativo, não é possível vender.';
+                    } else if (data.erro.toLowerCase().includes('estoque insuficiente')) {
+                        msg = 'Estoque insuficiente.';
+                    } else {
+                        msg = data.erro;
+                    }
+                }
+
+                responseMessage.innerText = msg;
+            }
+        })
+        .catch(() => {
+            responseMessage.innerText = 'Erro ao conectar com o servidor.';
+        });
+    });
+</script>
+
+
+</body>
+</html>

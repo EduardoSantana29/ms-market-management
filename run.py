@@ -5,6 +5,8 @@ from src.route import init_routes
 from src.route import blueprint
 import os
 from src.application.service.product_service import ProductService 
+from src.application.controller.sale_controller import sale_bp
+
 
 
 def create_app():
@@ -21,11 +23,14 @@ def create_app():
     init_routes(app)
 
     with app.app_context():
+        from src.infrastructure.model import product, user, sale  # adicione isso ANTES de db.create_all()
         db.create_all()
         print("📌 Tabelas criadas no PostgreSQL!")
 
 
     app.register_blueprint(blueprint)
+    app.register_blueprint(sale_bp)
+
 
     return app
 
@@ -66,6 +71,10 @@ def update_produto():
 @app.route('/produtos/excluir', methods=['GET'])
 def render_delete_product():
     return render_template('delete_product.html')
+
+@app.route('/vendas/registrar')
+def mostrar_tela_vendas():
+    return render_template('sell_product.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
