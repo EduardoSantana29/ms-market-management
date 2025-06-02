@@ -3,13 +3,11 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from src.application.service.sale_service import perform_sale
 from flask_cors import CORS
 
-sale_bp = Blueprint('sale', __name__)
-
-CORS(sale_bp, origins=["http://localhost:5173"])
-
-@sale_bp.route('/sell', methods=['POST'])
-@jwt_required()
-def sell_product_api():
+class SaleController:
+    
+    @staticmethod
+    @jwt_required()
+    def sell_product_api():
     data = request.get_json()
     if not data:
         return jsonify({"erro": "Corpo da requisição vazio"}), 400
