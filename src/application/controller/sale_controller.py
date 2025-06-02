@@ -1,8 +1,11 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from src.application.service.sale_service import perform_sale
+from flask_cors import CORS
 
 sale_bp = Blueprint('sale', __name__)
+
+CORS(sale_bp, resources={r"/api/sell": {"origins": "http://localhost:5173"}})
 
 @sale_bp.route('/sell', methods=['POST'])
 @jwt_required()
