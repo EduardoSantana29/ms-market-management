@@ -1,6 +1,7 @@
 from flask import jsonify, make_response, Blueprint, render_template
 from src.application.controller.user_controller import UserController
 from src.application.controller.product_controller import ProductController
+from src.application.controller.sale_controller import SaleController
 from src.application.service.product_service import ProductService 
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from src.application.controller.sale_controller import sale_bp
@@ -74,4 +75,10 @@ def init_routes(app):
     @jwt_required()
     def delete_product(product_id):
         return ProductController.delete_product(product_id)
+
+    @blueprint.route('/api/sell', methods=['POST'])
+    @jwt_required()
+    def sell_product_api():
+        """Endpoint para realizar a venda de um produto."""
+        return SaleController.sell_product_api()
     
