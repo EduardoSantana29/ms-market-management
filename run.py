@@ -5,7 +5,6 @@ from src.route import init_routes
 from src.route import blueprint
 import os
 from src.application.service.product_service import ProductService 
-from src.application.controller.sale_controller import sale_bp
 from flask_cors import CORS
 
 
@@ -31,7 +30,6 @@ def create_app():
 
 
     app.register_blueprint(blueprint)
-    app.register_blueprint(sale_bp)
 
 
     return app
