@@ -5,7 +5,7 @@ from flask_cors import CORS
 
 sale_bp = Blueprint('sale', __name__)
 
-CORS(sale_bp, resources={r"/api/sell": {"origins": "http://localhost:5173"}})
+CORS(sale_bp)
 
 @sale_bp.route('/sell', methods=['POST'])
 @jwt_required()
