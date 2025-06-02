@@ -4,7 +4,6 @@ from src.application.controller.product_controller import ProductController
 from src.application.controller.sale_controller import SaleController
 from src.application.service.product_service import ProductService 
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from src.application.controller.sale_controller import sale_bp
 
 blueprint = Blueprint('api', __name__)
 
