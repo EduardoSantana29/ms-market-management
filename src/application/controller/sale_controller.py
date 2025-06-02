@@ -11,15 +11,17 @@ class SaleController:
     @staticmethod
     @jwt_required()
     def sell_product_api():
+        if request.method == 'OPTIONS':
+            return '', 204
+        
         data = request.get_json()
-
-        _logger.info("Dados: %s", data)
+        print(data)
 
         if not data:
             return jsonify({"erro": "Corpo da requisição vazio"}), 400
 
         product_id = data.get('product_id')
-        quantity = data.get('quantity')
+        quantity = int(data.get('quantity'))
 
         if not product_id or not quantity:
             return jsonify({"erro": "Campos product_id e quantity são obrigatórios"}), 400
