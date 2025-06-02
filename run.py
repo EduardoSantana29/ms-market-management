@@ -11,12 +11,13 @@ from flask_cors import CORS
 
 def create_app():
     """Inicializa a aplicação Flask e a base de dados SQLite."""
-    app = Flask(__name__, template_folder='src/templates', static_folder='src/static')
-    CORS(app, origins=["http://localhost:5173"])
+    app = Flask(__name__, template_folder='src/templates', static_folder='src/static')    
 
      # Configuração do JWT
     app.config['JWT_SECRET_KEY'] = '9f1c7d2e3b6a4e2a9f7b6c5a1a4f3c2d1e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b'  # Substitua por sua chave secreta
     app.config['JWT_TOKEN_LOCATION'] = ['headers']  # Define onde o token será procurado (cabeçalho)
+    
+    CORS(app, supports_credentials=True)
 
     jwt = JWTManager(app)
 
