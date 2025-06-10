@@ -90,3 +90,13 @@ class ProductService:
         db.session.commit()
         return prod
 
+    @staticmethod
+    def set_discount(product_id, seller_id):
+        product = Product.query.filter_by(id=product_id)
+
+        if product:
+            product.price *= 0.10
+            product.seller_id = seller_id
+            db.session.commit()
+
+            return product

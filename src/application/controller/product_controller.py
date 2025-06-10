@@ -84,3 +84,18 @@ class ProductController:
         if not deleted:
             return jsonify({"erro": "Produto não encontrado ou não autorizado"}), 404
         return jsonify({"mensagem": "Produto excluído com sucesso!"}), 200
+
+
+    @staticmethod
+    @jwt_required()
+    def set_discount(product_id):
+        current_user_id = get_jwt_identity()
+        product = ProductService.set_discount(product_id, current_user_id)
+
+        if not product:
+            return make_response(jsonify({"erro": "Produto não encontrado."}), 404)
+
+        return make_response(jsonify(
+            {"mensagem": "Desconto aplicado com sucesso!", 
+            "produto": product.to_dict()}), 200
+        )

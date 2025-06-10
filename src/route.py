@@ -80,4 +80,10 @@ def init_routes(app):
     def sell_product_api():
         """Endpoint para realizar a venda de um produto."""
         return SaleController.sell_product_api()
+
+    @blueprint.route('/api/products/<int:product_id>/discount', methods=['PUT'])
+    @jwt_required()
+    def set_discount(product_id):
+        """Endpoint para aplicar desconto em um produto."""
+        return ProductController.set_discount(product_id)
     
