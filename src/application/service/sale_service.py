@@ -19,6 +19,11 @@ def perform_sale(seller_id, product_id, quantity):
     if quantity > product.quantity:
         abort(400, description="Estoque insuficiente.")
 
+
+def list_sales_by_seller(seller_id):
+    sales = Sale.query.filter_by(seller_id=seller_id).all()
+    return [sale.to_dict() for sale in sales]
+
     # Criar venda
     sale = Sale(
         product_id=product.id,

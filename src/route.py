@@ -81,3 +81,8 @@ def init_routes(app):
         """Endpoint para realizar a venda de um produto."""
         return SaleController.sell_product_api()
     
+    @blueprint.route('/api/sales', methods=['GET'])
+    @jwt_required()
+    def list_sales():
+        """Endpoint para listar vendas do vendedor autenticado."""
+        return SaleController.list_sales_api()

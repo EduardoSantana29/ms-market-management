@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Vendas - MS Market</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/sales_list.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Minhas Vendas</h1>
+    </header>
+
+    <main>
+        <div class="content">
+            <table id="salesTable">
+                <thead>
+                    <tr>
+                        <th>ID da venda</th>
+                        <th>Produto</th>
+                        <th>ID do Produto</th>
+                        <th>Quantidade</th>
+                        <th>Preço Unitario</th>
+                        <th>Data da Venda</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- As vendas serão preenchidas aqui via JS -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 MS Market Management. Todos os direitos reservados.</p>
+        <p>Contato: contato@msmarket.com | (11) 99999-9999</p>
+    </footer>
+
+    <script>
+        async function loadSales() {
+            try {
+                const response = await fetch('/api/sales', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    }
+                });
+
+                const data = await response.json();
+                const sales = data.vendas;
+
+                const tableBody = document.querySelector('#salesTable tbody');
+                tableBody.innerHTML = '';
+
+                sales.forEach(sale => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${sale.id}</td>
+                        <td>${sale.product_name}</td>
+                        <td>${sale.product_id}</td>
+                        <td>${sale.quantity}</td>
+                        <td>R$ ${sale.sale_price.toFixed(2)}</td>
+                        <td>${sale.sale_date}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+            } catch (error) {
+                console.error('Erro ao carregar as vendas:', error);
+                alert('Erro ao carregar as vendas');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadSales);
+    </script>
+</body>
+</html>

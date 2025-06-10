@@ -18,6 +18,7 @@ class Sale(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
+            "product_name": self.product.name,
             "product_id": self.product_id,
             "seller_id": self.seller_id,
             "quantity": self.quantity,

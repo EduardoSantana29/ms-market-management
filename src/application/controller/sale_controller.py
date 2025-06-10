@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from src.application.service.sale_service import perform_sale
+from src.application.service.sale_service import list_sales_by_seller
 from flask_cors import CORS
 import logging
 
@@ -33,5 +34,16 @@ class SaleController:
                 "mensagem": "Venda realizada com sucesso!",
                 "sale": sale.to_dict()
             }), 201
+        except Exception as e:
+            return jsonify({"erro": str(e)}), 400
+
+
+    @staticmethod
+    @jwt_required()
+    def list_sales_api():
+        try:
+            seller_id = get_jwt_identity()
+            sales = list_sales_by_seller(seller_id)
+            return jsonify({"vendas": sales}), 200
         except Exception as e:
             return jsonify({"erro": str(e)}), 400
